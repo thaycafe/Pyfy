@@ -31,21 +31,31 @@ class SearchBar(TextInput, ActionItem):
 
 
 class Login(Screen):
-    global cursor
-    global sm
+    global cursor, sm
+
     def iniciarDB(self):
-        
         sm.current = 'playlists'
     
 
 class Playlists(Screen):
-    pass
+    global cursor, sm
+
+    def listar_playlists(self):
+        sm.get_screen('playlists').ids.grid.clear_widgets()
+        sm.get_screen('playlists').ids.grid.add_widget(Label(text='PLaylist nova', color=(0,0,0,0)))
+        print('oi')
+        sm.current='playlists'
+
 
     
     
 class AddPlay(Screen):
 
+    def __init__(self, **kwargs):
+        super(AddPlay, self).__init__(**kwargs)
+        self.playlists = Playlists
 
+    playlists = Playlists
     def criar_play(self, playlist):
         conn = sqlite3.connect('banco.db')
         cursor = conn.cursor()
@@ -58,7 +68,7 @@ class AddPlay(Screen):
         );
         """)
         print(f'Playlist {playlist} criada com sucesso.')
-        sm.current = 'playlists'
+        self.playlists.listar_playlists(self.playlists)
 
 
 
