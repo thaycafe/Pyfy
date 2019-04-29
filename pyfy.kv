@@ -1,0 +1,228 @@
+#:import C kivy.utils.get_color_from_hex
+
+<Login>:
+    FloatLayout:
+        ActionBar:
+            pos_hint:{'top':1}
+            background_image: 'src/white-bg.png'
+            background_color:C("#FF4900")
+            ActionView:
+                ActionPrevious:
+                    title: 'PYFY'
+                    with_previous: False
+    
+        Image:
+            source:'src/playlist.png'
+            size_hint:.3, .3
+            # pos_hint:{'center_x':.5, 'center_y':.65}
+            pos_hint:{'center_x':.5, 'center_y':.5}
+
+        Label:
+            text:'Bem vindo ao PYFY!'
+            font_name:'src/coolveticarg.ttf'
+            # pos_hint:{'center_x':.5, 'center_y':.4}
+            pos_hint:{'center_x':.5, 'center_y':.75}
+            font_size:sp(48)
+            color:C('#000000')
+
+        # TextInput:
+        #     id:nickname
+        #     hint_text:'Digite seu nome:'
+        #     font_name:'src/Roboto-Light.ttf'
+        #     font_size:sp(24)
+        #     pos_hint:{'center_x':.5, 'center_y':.5}
+        #     size_hint:(.4, .1)
+        #     halign:"center"
+        #     multiline:False
+        
+        # TextInput:
+        #     id:senha
+        #     hint_text:'Digite seu senha:'
+        #     font_name:'src/Roboto-Light.ttf'
+        #     font_size:sp(24)
+        #     pos_hint:{'center_x':.5, 'center_y':.39}
+        #     size_hint:(.4, .1)
+        #     halign:"center"
+        #     multiline:False        
+
+        Button:
+            text:"Iniciar"
+            font_name:'src/Roboto-Light.ttf'
+            size_hint:.4, .09
+            bold:True
+            pos_hint:{'center_x':.5, 'center_y':.25}
+            font_size:sp(24)
+            on_press:
+                root.iniciarDB()
+
+
+<Playlists>:
+    FloatLayout:
+        ActionBar:
+            pos_hint:{'top':1}
+            background_image: 'src/white-bg.png'
+            background_color:C("#FF4900")
+            ActionView:
+                ActionPrevious:
+                    title: 'PYFY'
+                    with_previous: False
+                SearchBar:
+                    size_hint_x: .6
+                    size_hint_y: .75
+                    pos_hint: {'x': 0, 'center_y':.5}
+                    on_text_validate: searchbutt.trigger_action()
+
+                ActionButton:
+                    text:"Buscar"
+                    font_name:'src/Roboto-Light.ttf'
+                    background_color: C("#FF4900")
+                    size_hint_x: None
+                    size_hint_y: None
+                    size: (30,30)
+                    pos_hint: {'x': .3, 'center_y': .5}
+                    id: searchbutt
+        
+        Label:
+            text:'Suas playlists'
+            pos_hint:{'center_x':.5, 'center_y':.85}
+            color:C('#000000')
+            font_size:dp(24)
+
+        ScrollView:
+            size_hint:.8, .6
+            pos_hint:{'center_x':.5, 'center_y':.5}
+            
+            
+            GridLayout:
+                cols:1
+                size_hint_y:None
+                row_default_height: '70dp'
+                height: self.minimum_height
+                spacing: 8
+
+        Button:
+            text:"Add playlist"
+            font_name:'src/Roboto-Light.ttf'
+            size_hint:.4, .09
+            bold:True
+            pos_hint:{'center_x':.5, 'center_y':.15}
+            font_size:sp(24)
+            on_press:  root.manager.current='addplay'
+
+<AddPlay>:
+    FloatLayout:
+        ActionBar:
+            pos_hint:{'top':1}
+            background_image: 'src/white-bg.png'
+            background_color:C("#FF4900")
+            ActionView:
+                ActionPrevious:
+                    title: 'PYFY'
+                    with_previous: False
+        
+        Label:
+            text:'Adicionar nova Playlist'
+            font_name:'src/coolveticarg.ttf'
+            # pos_hint:{'center_x':.5, 'center_y':.4}
+            pos_hint:{'center_x':.5, 'center_y':.75}
+            font_size:sp(32)
+            color:C('#000000')
+        
+        TextInput:
+            hint_text:"Digite o nome da Playlist:"
+            id:playlist
+            font_name:'src/Roboto-Light.ttf'
+            font_size:sp(24)
+            pos_hint:{'center_x':.5, 'center_y':.5}
+            size_hint:(.4, .1)
+            halign:"center"
+            multiline:False
+
+        Button:
+            text:'Adicionar'
+            font_name:'src/Roboto-Light.ttf'
+            size_hint:.3, .09
+            pos_hint:{'center_x':.5, 'center_y':.25}
+            font_size:sp(24)
+            on_press:root.criar_play(playlist.text)
+
+
+
+
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+                # Button:
+                #     bold:True
+                #     background_normal:''
+                #     background_color: C("#d66f05")
+                #     font_size:dp(20)
+                #     text:'Sintaxe .py'
+
+                
+               
+
+        
