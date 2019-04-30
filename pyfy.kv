@@ -147,7 +147,21 @@
             font_size:sp(24)
             on_press:root.criar_play(playlist.text)
 
-
+<Play>:
+    FloatLayout:
+        ActionBar:
+            pos_hint:{'top':1}
+            background_image: 'src/white-bg.png'
+            background_color:C("#FF4900")
+            ActionView:
+                ActionPrevious:
+                    title: 'PYFY'
+                    with_previous: False
+        
+        Label:
+            text:'oi'
+            color:C('#000000')
+        
 
 
                 # Button:

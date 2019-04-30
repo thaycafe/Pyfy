@@ -15,7 +15,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 
-global sm, cursor, playlist
+global sm, playlist
 
 Builder.load_file('pyfy.kv')
 
@@ -31,22 +31,39 @@ class SearchBar(TextInput, ActionItem):
 
 
 class Login(Screen):
-    global cursor, sm
+    global  sm
 
     def iniciarDB(self):
         sm.current = 'playlists'
     
+class Play(Screen):
+    global  sm
+    
+    def teste(self, instance):
+        
+        
+        sm.current='play'
 
 class Playlists(Screen):
-    global cursor, sm
-
-    def listar_playlists(self):
+    global sm
+    
+    
+    def __init__(self, **kwargs):
+        super(Playlists, self).__init__(**kwargs)
+        
+        
+    def listar_playlists():
+        play = Play()
         sm.get_screen('playlists').ids.grid.clear_widgets()
-        sm.get_screen('playlists').ids.grid.add_widget(Label(text='PLaylist nova', color=(0,0,0,0)))
-        print('oi')
+        conn = sqlite3.connect('banco.db')
+        cursor = conn.cursor()
+        cursor.execute('''SELECT name FROM sqlite_master WHERE type ='table' AND name NOT LIKE 'sqlite_%';''')
+        for i in cursor:
+            bt = Button(text=i[0], on_press=play.teste)
+            sm.get_screen('playlists').ids.grid.add_widget(bt)
         sm.current='playlists'
 
-
+    
     
     
 class AddPlay(Screen):
@@ -68,7 +85,7 @@ class AddPlay(Screen):
         );
         """)
         print(f'Playlist {playlist} criada com sucesso.')
-        self.playlists.listar_playlists(self.playlists)
+        self.playlists.listar_playlists()
 
 
 
@@ -79,6 +96,7 @@ class PyfyApp(App):
         sm.add_widget(Login(name='login'))
         sm.add_widget(Playlists(name='playlists'))
         sm.add_widget(AddPlay(name='addplay'))
+        sm.add_widget(Play(name='play'))
         return sm
 
 
