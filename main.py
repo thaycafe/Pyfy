@@ -25,8 +25,64 @@ playlist ='oi'
 Builder.load_file('pyfy.kv')
 
 
+
+class Play(Screen):
+    global  sm, playlist
+    
+    def listar_dados(self, playlist):
+        sm.get_screen('play').ids.grid_play.clear_widgets()
+        conn = sqlite3.connect('banco.db')
+        cursor = conn.cursor()
+        cursor.execute(f'''SELECT id, nome, artista, genero FROM {playlist};''')
+        for i in cursor:
+            label = f'{i[1]}\nArtista: {i[2]}\nGênero: {i[3]}'
+            btl = Button(text=label, disabled=True)
+            bt = Button(text=f'Excluir', id=str(i[0]), on_press=self.excluir_musica)
+            bt2= Button(text=f'Editar',  id=str(i[0]))
+            box = BoxLayout(orientation='vertical')
+            box2 = BoxLayout(orientation='vertical', size_hint=(.2,1))
+            box2.add_widget(bt)
+            box2.add_widget(bt2)
+            box.add_widget(btl)
+            box3 = BoxLayout(orientation='horizontal')
+            box3.add_widget(box)
+            box3.add_widget(box2)
+            sm.get_screen('play').ids.grid_play.add_widget(box3)
+        sm.get_screen('addmusica').ids.nome_action.title = ''
+        sm.current = 'play'
+        conn.close()
+
+
+    def detalhes_play(self, instance):
+        sm.get_screen('play').ids.grid_play.clear_widgets()
+        sm.get_screen('play').ids.nome_playlist.text = instance.text
+        self.listar_dados(instance.text)
+        
+
+    def add_musica(self):
+        nomeplaylist = sm.get_screen('play').ids.nome_playlist.text
+        sm.get_screen('addmusica').ids.nome_action.title = nomeplaylist
+        sm.current='addmusica'
+
+  
+
+    def excluir_musica(self, instance):
+        id=instance.id
+        playlist = sm.get_screen('play').ids.nome_playlist.text
+        conn = sqlite3.connect('banco.db')
+        cursor = conn.cursor()
+        cursor.execute(f"""DELETE FROM {playlist} WHERE id = ?""", (id,))
+        conn.commit()
+        print('deu bom')
+        sm.get_screen('play').ids.grid_play.clear_widgets()
+        self.listar_dados(playlist)
+        conn.close()
+
 class AddMusica(Screen):
+
+    
     def add(self):
+        play = Play()
         conn = sqlite3.connect('banco.db')
         cursor = conn.cursor()
         playlist = sm.get_screen('addmusica').ids.nome_action.title
@@ -36,37 +92,9 @@ class AddMusica(Screen):
         dados = (nome, artista, genero)
         cursor.execute(f"""INSERT INTO {playlist}(nome, artista, genero)VALUES (?, ?, ?)""", dados)
         conn.commit()
+        play.listar_dados(playlist)
         print('----------------------------------------\nMúsica inserida com sucesso!\n----------------------------------------')
-    
-
-class Play(Screen):
-    global  sm, playlist
-    
-    
-
-    def detalhes_play(self, instance):
-        sm.get_screen('play').ids.nome_playlist.text = instance.text
-        sm.current='play'
-
-    def add_musica(self):
-        nomeplaylist = sm.get_screen('play').ids.nome_playlist.text
-        sm.get_screen('addmusica').ids.nome_action.title = nomeplaylist
-        sm.current='addmusica'
-
-
-    
-   
-
-        # sm.get_screen('play').ids.grid_play.clear_widgets()
-        # sm.get_screen('play').ids.nome_playlist.text = instance.text
-        # box = BoxLayout(orientation='vertical', )
-        # musica = Label(text='Nome da música', color=(0,0,0,0))
-        # genero = Label(text='genero', color=(0,0,0,0))
-        # artista = Label(text='artista', color=(0,0,0,0))
-        # box.add_widget(musica)nomeplaylinomeplaylistnomeplaylistnomeplaylistst
-        # box.add_widget(artista)
-        # box.add_widget(genero)
-        # sm.get_screen('play').ids.grid_play.add_widget(box)
+        conn.close()
 
 
 class Playlists(Screen):
@@ -87,6 +115,7 @@ class Playlists(Screen):
             bt = Button(text=i[0], on_press=play.detalhes_play)
             sm.get_screen('playlists').ids.grid.add_widget(bt)
         sm.current='playlists'
+        conn.close()
 
 
 class Login(Screen):
@@ -118,6 +147,7 @@ class AddPlay(Screen):
         """)
         print(f'Playlist {playlist} criada com sucesso.')
         self.playlists.listar_playlists()
+        conn.close()
 
 
 class PyfyApp(App):
