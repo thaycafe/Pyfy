@@ -66,21 +66,7 @@
                 ActionPrevious:
                     title: 'PYFY'
                     with_previous: False
-                SearchBar:
-                    size_hint_x: .6
-                    size_hint_y: .75
-                    pos_hint: {'x': 0, 'center_y':.5}
-                    on_text_validate: searchbutt.trigger_action()
-
-                ActionButton:
-                    text:"Buscar"
-                    font_name:'src/Roboto-Light.ttf'
-                    background_color: C("#FF4900")
-                    size_hint_x: None
-                    size_hint_y: None
-                    size: (30,30)
-                    pos_hint: {'x': .3, 'center_y': .5}
-                    id: searchbutt
+                
         
         Label:
             text:'Suas playlists'
@@ -106,7 +92,7 @@
             font_name:'src/Roboto-Light.ttf'
             size_hint:.4, .09
             bold:True
-            pos_hint:{'center_x':.5, 'center_y':.15}
+            pos_hint:{'center_x':.5, 'center_y':.13}
             font_size:sp(24)
             on_press:  root.manager.current='addplay'
 
@@ -149,6 +135,7 @@
 
 <Play>:
     FloatLayout:
+        id:float
         ActionBar:
             pos_hint:{'top':1}
             background_image: 'src/white-bg.png'
@@ -156,12 +143,90 @@
             ActionView:
                 ActionPrevious:
                     title: 'PYFY'
+                    on_press: root.manager.current='playlists'
+        
+        Label:
+            id:nome_playlist
+            pos_hint:{'center_x':.5, 'center_y':.85}
+            color:C('#000000')
+            font_size:dp(24)
+
+        ScrollView:
+            size_hint:.8, .6
+            pos_hint:{'center_x':.5, 'center_y':.5}
+            
+            GridLayout:
+                id:grid_play
+                cols:1
+                size_hint_y:None
+                row_default_height: '70dp'
+                height: self.minimum_height
+                spacing: 8
+            
+        Button:
+            text:"Add música"
+            font_name:'src/Roboto-Light.ttf'
+            size_hint:.4, .09
+            bold:True
+            pos_hint:{'center_x':.5, 'center_y':.13}
+            font_size:sp(24)
+            on_press:root.add_musica()
+            
+        
+<AddMusica>:
+    FloatLayout:
+        ActionBar:
+            pos_hint:{'top':1}
+            background_image: 'src/white-bg.png'
+            background_color:C("#FF4900")
+            ActionView:
+                ActionPrevious:
+                    id:nome_action
                     with_previous: False
         
         Label:
-            text:'oi'
+            text:'Adicionar nova Música'
+            font_name:'src/coolveticarg.ttf'
+            # pos_hint:{'center_x':.5, 'center_y':.4}
+            pos_hint:{'center_x':.5, 'center_y':.8}
+            font_size:sp(32)
             color:C('#000000')
         
+        TextInput:
+            hint_text:"Digite o nome da Música:"
+            id:nome_musica
+            font_name:'src/Roboto-Light.ttf'
+            font_size:sp(24)
+            pos_hint:{'center_x':.5, 'center_y':.60}
+            size_hint:(.4, .1)
+            halign:"center"
+            multiline:False
+        TextInput:
+            hint_text:"Digite o nome do Artista:"
+            id:nome_artista
+            font_name:'src/Roboto-Light.ttf'
+            font_size:sp(24)
+            pos_hint:{'center_x':.5, 'center_y':.49}
+            size_hint:(.4, .1)
+            halign:"center"
+            multiline:False
+        TextInput:
+            hint_text:"Digite o nome do Gênero:"
+            id:nome_genero
+            font_name:'src/Roboto-Light.ttf'
+            font_size:sp(24)
+            pos_hint:{'center_x':.5, 'center_y':.38}
+            size_hint:(.4, .1)
+            halign:"center"
+            multiline:False
+
+        Button:
+            text:'Adicionar'
+            font_name:'src/Roboto-Light.ttf'
+            size_hint:.3, .09
+            pos_hint:{'center_x':.5, 'center_y':.2}
+            font_size:sp(24)
+            on_press: root.add()
 
 
                 # Button:
